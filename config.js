@@ -1,17 +1,20 @@
-export const RPCKey = ``;
+export let addressRegistry = AmoyRegistry;
 
-export const BnbRegistry = `0x9557614d11e11381A65459cA9CE54259bd723394`;
-export const APIConsumer = `0x2d8482a14c25C53cd0606068cbAC795c69E9500c`;
-export const MyToken = `0x91E714f998B1AAe75b133E0467b5FAA2783f5D0A`;
-export const comoditiesContract = `0xC3a7ef1A48C7E42664dc6beE93b18Abd973159B5`;
-export const BnbCurrency = `BNB`;
-export const BnbRPCaUrl = ``;
-export const Sender = `0x2DdE505706c4711c465c79B5568CC2C50454Ece9`;
-export const reciever = `0x5f93699d11bc00c45d3d90184cc079a5cd6e4bd7`;
+export const AmoyRegistry = `0x684A00B2da6e3A1857155899e0123F14f910d0b8`;
+export const AmoyAPIConsumer = `0x2d8482a14c25C53cd0606068cbAC795c69E9500c`;
+export const AmoyMyToken = `0x91E714f998B1AAe75b133E0467b5FAA2783f5D0A`;
+export const AmoycomoditiesContract = `0xC3a7ef1A48C7E42664dc6beE93b18Abd973159B5`;
+export const AmoySender = `0x2DdE505706c4711c465c79B5568CC2C50454Ece9`;
+export const Amoyreciever = `0x5f93699d11bc00c45d3d90184cc079a5cd6e4bd7`;
 
-export let addressRegistry = BnbRegistry;
-export let currency = BnbCurrency;
-export let RPCUrl = `${BnbRPCaUrl}${RPCKey}`;
+
+export const ScrollRegistry = `0x684A00B2da6e3A1857155899e0123F14f910d0b8`;
+export const ScrollAPIConsumer = `0x2d8482a14c25C53cd0606068cbAC795c69E9500c`;
+export const ScrollMyToken = `0x91E714f998B1AAe75b133E0467b5FAA2783f5D0A`;
+export const ScrollcomoditiesContract = `0xC3a7ef1A48C7E42664dc6beE93b18Abd973159B5`;
+export const ScrollSender = `0x2DdE505706c4711c465c79B5568CC2C50454Ece9`;
+export const Scrollreciever = `0x5f93699d11bc00c45d3d90184cc079a5cd6e4bd7`;
+
 
 export const abiRegistry =`[
 	{
