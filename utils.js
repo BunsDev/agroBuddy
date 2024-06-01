@@ -29,12 +29,12 @@ export async function switchNetworkToAmoy() {
         });
 }
 
-export async function switchNetworkToBNBtestnet() {
+export async function switchNetworkToFufi() {
     await window.ethereum.request({
         "method": "wallet_switchEthereumChain",
         "params": [
           {
-            "chainId": "0x61"
+            "chainId": "0xa869"
           }
         ]
     });
@@ -344,6 +344,15 @@ export async function cropToMsp(cropName) {
     return data;
 }
 
+export async function calculateUSD(_amount) {
+    const contract = await getProviderFromInfura();
+    // const address = await getUserAddress();
+    const data = await contract.calculate(_amount);
+    console.log("dao id", data);
+    return data;
+}
+
+
 // ----------------------------------------------------------------
 
 
@@ -440,8 +449,8 @@ export async function start(
         rentAmount, 
         rentDuration, 
         area, 
-        "16281711391670634445", 
-        "0x5f93699d11bc00c45d3d90184cc079a5cd6e4bd7"
+        "14767482510784806043", 
+        "0x9F484cf5FD2A6D7DcE4FfB51098B1857Cf81b3a3"
     );
     await tx.wait();
 
@@ -457,9 +466,9 @@ export async function acceptRental(
     const tx = await contract.acceptRental( 
         rentId, 
         _amount, 
-        "0xcab0EF91Bee323d1A617c0a027eE753aFd6997E4", 
-        "13264668187771770619", 
-        "0x2DdE505706c4711c465c79B5568CC2C50454Ece9"
+        "0xD21341536c5cF5EB1bcb58f6723cE26e8D8E90e4", 
+        "16281711391670634445", 
+        "0xC3a7ef1A48C7E42664dc6beE93b18Abd973159B5"
     );
     await tx.wait();
     console.log("buyer registered and staked");

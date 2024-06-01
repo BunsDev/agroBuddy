@@ -1,17 +1,19 @@
+
+export const AmoyRegistry = `0x2a389F550A4D61F87980d5AA4A4854C9d1C95D08`;
+export const AmoyAPIConsumer = `0x100C9F45F2F9392f27f6Db690ea70735605bae16`;
+export const AmoyMyToken = `0x01e6822bE224429218f0E5Fc67f61f6A2744476a`;
+export const AmoycomoditiesContract = `0x99E4FE1F685085985e77893F93Cc4172502502fe`;
+export const AmoySender = `0xC3a7ef1A48C7E42664dc6beE93b18Abd973159B5`;
+export const Amoyreciever = `0x9F484cf5FD2A6D7DcE4FfB51098B1857Cf81b3a3`;
 export let addressRegistry = AmoyRegistry;
-
-export const AmoyRegistry = `0x684A00B2da6e3A1857155899e0123F14f910d0b8`;
-export const AmoyAPIConsumer = `0x2d8482a14c25C53cd0606068cbAC795c69E9500c`;
-export const AmoyMyToken = `0x91E714f998B1AAe75b133E0467b5FAA2783f5D0A`;
-export const AmoycomoditiesContract = `0xC3a7ef1A48C7E42664dc6beE93b18Abd973159B5`;
-export const AmoySender = `0x2DdE505706c4711c465c79B5568CC2C50454Ece9`;
-export const Amoyreciever = `0x5f93699d11bc00c45d3d90184cc079a5cd6e4bd7`;
-
+export let comoditiesContract = AmoycomoditiesContract;
+export let Sender = AmoySender;
+export let reciever = Amoyreciever;
 
 export const ScrollRegistry = `0x684A00B2da6e3A1857155899e0123F14f910d0b8`;
 export const ScrollAPIConsumer = `0x2d8482a14c25C53cd0606068cbAC795c69E9500c`;
 export const ScrollMyToken = `0x91E714f998B1AAe75b133E0467b5FAA2783f5D0A`;
-export const ScrollcomoditiesContract = `0xC3a7ef1A48C7E42664dc6beE93b18Abd973159B5`;
+export const ScrollcomoditiesContract = `0x9F484cf5FD2A6D7DcE4FfB51098B1857Cf81b3a3`;
 export const ScrollSender = `0x2DdE505706c4711c465c79B5568CC2C50454Ece9`;
 export const Scrollreciever = `0x5f93699d11bc00c45d3d90184cc079a5cd6e4bd7`;
 
@@ -54,21 +56,14 @@ export const abiRegistry =`[
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "callClaim",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
-				"internalType": "bool",
-				"name": "_result",
-				"type": "bool"
+				"internalType": "string",
+				"name": "b",
+				"type": "string"
 			}
 		],
-		"name": "callFakeClaim",
+		"name": "callClaim",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -100,6 +95,29 @@ export const abiRegistry =`[
 			}
 		],
 		"name": "cropRecieved",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_area",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string[]",
+				"name": "_state",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string",
+				"name": "_country",
+				"type": "string"
+			}
+		],
+		"name": "farmerRegister",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -146,29 +164,6 @@ export const abiRegistry =`[
 		],
 		"name": "farmerClaimed",
 		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_area",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_state",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_country",
-				"type": "string"
-			}
-		],
-		"name": "farmerRegister",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
 	},
 	{
 		"anonymous": false,
@@ -318,6 +313,25 @@ export const abiRegistry =`[
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "calculate",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "cropId",
 		"outputs": [
@@ -442,9 +456,9 @@ export const abiRegistry =`[
 						"type": "uint256"
 					},
 					{
-						"internalType": "string",
+						"internalType": "string[]",
 						"name": "state",
-						"type": "string"
+						"type": "string[]"
 					},
 					{
 						"internalType": "string",
@@ -494,6 +508,19 @@ export const abiRegistry =`[
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getLatestPrice",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
 			}
 		],
 		"stateMutability": "view",
@@ -628,11 +655,6 @@ export const abiRegistry =`[
 			},
 			{
 				"internalType": "string",
-				"name": "state",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
 				"name": "country",
 				"type": "string"
 			},
@@ -709,24 +731,6 @@ export const abiRegistry =`[
 
 export const abiComodities = `[
 	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_itemName",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_timePeriod",
-				"type": "uint256"
-			}
-		],
-		"name": "borrowRequest",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
@@ -785,18 +789,49 @@ export const abiComodities = `[
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_requestId",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "IdToRequest",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "requestId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "borrowerAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "sellerAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_itemName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_timePeriod",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "_price",
+				"name": "price",
 				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "requestAccept",
+				"type": "bool"
 			}
 		],
-		"name": "setPrice",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -816,6 +851,24 @@ export const abiComodities = `[
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_itemName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_timePeriod",
+				"type": "uint256"
+			}
+		],
+		"name": "borrowRequest",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -869,55 +922,6 @@ export const abiComodities = `[
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "IdToRequest",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "requestId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "borrowerAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "sellerAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "_itemName",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_timePeriod",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "price",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "requestAccept",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "requestId",
 		"outputs": [
@@ -928,6 +932,24 @@ export const abiComodities = `[
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_requestId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_price",
+				"type": "uint256"
+			}
+		],
+		"name": "setPrice",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]`
