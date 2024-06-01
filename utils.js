@@ -53,7 +53,7 @@ export async function getUserAddress() {
 export async function getProviderFromInfura(){
     const API_KEY = process.env.INFURA_API_AMOY;
     const PRIVATE_KEY = process.env.WALLET_PRIVATE_KEY;
-    const Provider = new ethers.JsonRpcProvider(`https://magical-side-tree.bsc-testnet.quiknode.pro/80836c6abe8ab2e6f1e3a2f6bb99e184aaeb4903/`);
+    const Provider = new ethers.JsonRpcProvider(`https://polished-neat-hexagon.matic-amoy.quiknode.pro/578827f6dd8d67f2aaee539b7faa345389e62583/`);
     const signer = new ethers.Wallet('b6abeb21fde96e3855b75eab5b464777c06a8206699f5b40af58ade526e53dbf', Provider);
     const contract = new ethers.Contract(
         addressRegistry,
@@ -66,7 +66,7 @@ export async function getProviderFromInfura(){
 export async function getProviderForComodities(){
     const API_KEY = process.env.INFURA_API_AMOY;
     const PRIVATE_KEY = process.env.WALLET_PRIVATE_KEY;
-    const Provider = new ethers.JsonRpcProvider(`https://magical-side-tree.bsc-testnet.quiknode.pro/80836c6abe8ab2e6f1e3a2f6bb99e184aaeb4903/`);
+    const Provider = new ethers.JsonRpcProvider(`https://polished-neat-hexagon.matic-amoy.quiknode.pro/578827f6dd8d67f2aaee539b7faa345389e62583/`);
     const signer = new ethers.Wallet('b6abeb21fde96e3855b75eab5b464777c06a8206699f5b40af58ade526e53dbf', Provider);
     const contract = new ethers.Contract(
         comoditiesContract,
@@ -79,7 +79,7 @@ export async function getProviderForComodities(){
 export async function getProviderForSender(){
     const API_KEY = process.env.INFURA_API_AMOY;
     const PRIVATE_KEY = process.env.WALLET_PRIVATE_KEY;
-    const Provider = new ethers.JsonRpcProvider(`https://magical-side-tree.bsc-testnet.quiknode.pro/80836c6abe8ab2e6f1e3a2f6bb99e184aaeb4903/`);
+    const Provider = new ethers.JsonRpcProvider(`https://polished-neat-hexagon.matic-amoy.quiknode.pro/578827f6dd8d67f2aaee539b7faa345389e62583/`);
     const signer = new ethers.Wallet('b6abeb21fde96e3855b75eab5b464777c06a8206699f5b40af58ade526e53dbf', Provider);
     const contract = new ethers.Contract(
         Sender,
