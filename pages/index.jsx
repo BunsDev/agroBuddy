@@ -7,12 +7,12 @@ const Home = () => {
   return (
     <>
       <Head>
-        <title>Agricultures</title>
+        <title>Agrobuddy</title>
         <meta
           name="description"
           content=""
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/logo.png" />
       </Head>
 
       {/* <Navbar /> */}
