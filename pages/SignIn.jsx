@@ -26,7 +26,10 @@ const SignIn = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      await register(details._area, details._state, details._country);
+      const { _state } = details;
+      const formattedDetails = [ _state];
+      console.log("Formatted details:", formattedDetails);
+      await register(details._area,formattedDetails , details._country);
       console.log("Farmer is registered");
       //getUserAddress();
       getAllFarmers();

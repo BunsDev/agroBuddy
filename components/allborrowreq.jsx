@@ -1,7 +1,7 @@
 'use client'
 import 
 React, { useState, useEffect } from "react";
-import { getUserAddress, setPrice, getAllRequest } from "../utils";
+import { getUserAddress, setPrice, getAllRequest , switchNetworkToFuji } from "../utils";
 import Toggle from "../pages/toggle";
 const AllBorrowReq = () => {
   const [farmerAddress, setFarmerAddress] = useState(null);

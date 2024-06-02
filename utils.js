@@ -29,7 +29,7 @@ export async function switchNetworkToAmoy() {
         });
 }
 
-export async function switchNetworkToFufi() {
+export async function switchNetworkToFuji() {
     await window.ethereum.request({
         "method": "wallet_switchEthereumChain",
         "params": [
@@ -203,9 +203,9 @@ export async function callRequestClaim(){
     return tx;
 }
 
-export async function callClaim(){
+export async function callClaim(_true){
     const contract = await getRegistryContract(true);
-    const tx = await contract.callClaim();
+    const tx = await contract.callClaim(_true);
     await tx.wait();
     console.log("farmer claim verified");
 }
@@ -345,7 +345,7 @@ export async function cropToMsp(cropName) {
 }
 
 export async function calculateUSD(_amount) {
-    const contract = await getProviderFromInfura();
+    const contract = await getRegistryContract(true);
     // const address = await getUserAddress();
     const data = await contract.calculate(_amount);
     console.log("dao id", data);
@@ -455,6 +455,7 @@ export async function start(
     await tx.wait();
 
     console.log("buyer registered and staked");
+    return tx;
 }
 
 

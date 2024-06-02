@@ -2,11 +2,15 @@
 import React, { useState } from 'react';
 import AllLand from "../components/allland";
 import AllBorrowReq from "../components/allborrowreq";
-
+import  {switchNetworkToFuji , getUserAddress} from "../utils";
 const ToggleButton = () => {
+  const [userAddress, setUserAddress] = useState(null);
   const [isLand, setIsLand] = useState(true);
 
-  const handleLandClick = () => {
+  const handleLandClick = async () => {
+    await switchNetworkToFuji();
+    const address = await getUserAddress();
+    setUserAddress(address);
     setIsLand(true);
   };
 

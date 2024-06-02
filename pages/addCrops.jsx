@@ -27,11 +27,7 @@ const AddCrop = () => {
       const price = BigInt(details.price);
       const quantity = BigInt(details.quantity);
       setLoading(true);
-      const transactionResponse = await addCrop(details.cropName, price, quantity);
-      console.log(transactionResponse);
-      const transactionHash = transactionResponse.hash;
-      console.log("Transaction Hash:", transactionHash);
-       toast.success(transactionHash);
+      await addCrop(details.cropName, price, quantity);
        toast.success("Crops Added Successfully");
       console.log("Crop Added Successfully");
       const crops = await getAllCrop();

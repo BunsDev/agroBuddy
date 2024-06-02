@@ -2,8 +2,25 @@
 import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import{ switchNetworkToAmoy , getUserAddress } from "../utils"
+import {useState } from 'react';
 
 const Navbar = () => {
+  const [userAddress, setUserAddress] = useState(null);
+
+  const handleGetStarted = async () => {
+    await switchNetworkToAmoy();
+    const address = await getUserAddress();
+    setUserAddress(address);
+  };
+
+  const truncateAddress = (address) => {
+    if (!address) return '';
+    const halfLength = Math.ceil(address.length / 4);
+    return `${address.substring(0, halfLength)}....`;
+  };
+
+
   const navigation = [
     { label: 'Register', path: '/SignIn' },
     { label: 'Dashboard', path: '/dashboard' },
@@ -70,8 +87,22 @@ const Navbar = () => {
           </ul>
         </div>
 
-        <div className="hidden mr-3 space-x-4 lg:flex nav__item relative right-6">
-          <ConnectButton chainStatus="icon" accountStatus="avatar" className="px-6 py-2 text-white bg-indigo-600 hover:bg-indigo-800 ease-in-out duration-300 rounded-md md:ml-5" />
+        {/* <div className="hidden mr-3 space-x-4 lg:flex nav__item absolute  ">
+          <Link href="/" className="px-6 py-2 text-white bg-indigo-600 rounded-md md:ml-5">
+              Get Started
+          </Link>
+        </div> */}
+
+<div className="hidden mr-3 space-x-4 lg:flex nav__item relative right-6">
+          {userAddress ? (
+            <div className="px-6 py-2 text-black bg-gray-100 rounded-md md:ml-5 shadow-2xl border border-black text-left z-50">
+              {truncateAddress(userAddress)}
+            </div>
+          ) : (
+            <button className="px-6 py-2 text-white bg-indigo-600 hover:bg-indigo-700 ease-in-out duration-500 rounded-md md:ml-5" onClick={handleGetStarted}>
+              Get Started
+            </button>
+          )}
         </div>
       </nav>
     </div>

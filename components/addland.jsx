@@ -27,8 +27,12 @@ const AddLand = () => {
       const rentamount = BigInt(details.rentamount);
       const days = BigInt(details.days);
       setLoading(true);
-      await start(details.area, rentamount, days , hash);
-      toast.success("Land Added Successfully",hash);
+      const transactionResponse = await start(details.area, rentamount, days );
+      console.log(transactionResponse);
+      const transactionHash = transactionResponse.hash;
+      console.log("Transaction Hash:", transactionHash);
+      toast.success(transactionHash);
+      toast.success("Land Added Successfully");
       console.log("Land Added Successfully");
       setLoading(false);
     } catch (error) {
