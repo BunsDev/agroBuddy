@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol";
 
@@ -10,7 +10,7 @@ contract comodities{
      address owner;
 
      constructor(){
-        token = IERC20(0x91E714f998B1AAe75b133E0467b5FAA2783f5D0A);
+        token = IERC20(0x01e6822bE224429218f0E5Fc67f61f6A2744476a);
         owner = msg.sender; 
      }
 
@@ -61,19 +61,23 @@ contract comodities{
         require(_price > 0 ,"price must be greater than 0");
         request.price = _price;
         request.sellerAddress = msg.sender;
-        emit priceSet(request.borrowerAddress, msg.sender, _price);
-    }
-
-    function AcceptRequest(bool _value) public {
-        requestId = addressToId[msg.sender];
-        Request storage request = IdToRequest[requestId];
-        require(request.requestAccept == false,"request already accepted");
-        request.requestAccept = _value;
+        request.requestAccept = true;
         token.approve(address(this), request.price);
-        if(request.requestAccept == true){
-            token.transferFrom(msg.sender, request.sellerAddress, request.price);
-            emit requestAccepted(request.borrowerAddress, request.sellerAddress, request.price);   
-        }
+        token.transferFrom(msg.sender, request.sellerAddress, request.price);
+        emit requestAccepted(request.borrowerAddress, request.sellerAddress, request.price);   
 
     }
+
+    // function AcceptRequest(bool _value) public {
+    //     requestId = addressToId[msg.sender];
+    //     Request storage request = IdToRequest[requestId];
+    //     require(request.requestAccept == false,"request already accepted");
+    //     request.requestAccept = _value;
+    //     token.approve(address(this), request.price);
+    //     if(request.requestAccept == true){
+    //         token.transferFrom(msg.sender, request.sellerAddress, request.price);
+    //         emit requestAccepted(request.borrowerAddress, request.sellerAddress, request.price);   
+    //     }
+
+    // }
 }

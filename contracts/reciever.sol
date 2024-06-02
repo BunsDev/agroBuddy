@@ -9,15 +9,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./rentTokens.sol";
 
-/**
- * THIS IS AN EXAMPLE CONTRACT THAT USES HARDCODED VALUES FOR CLARITY.
- * THIS IS AN EXAMPLE CONTRACT THAT USES UN-AUDITED CODE.
- * DO NOT USE THIS CODE IN PRODUCTION.
- */
 
-/// @title - A simple messenger contract for sending/receiving string messages across chains.
-/// Pay using native tokens (e.g, ETH in Ethereum)
-contract TTTDemo is CCIPReceiver, OwnerIsCreator {
+contract Receiver is CCIPReceiver, OwnerIsCreator {
     // Custom errors to provide more descriptive revert messages.
     error NoMessageReceived(); // Used when trying to access a message but no messages have been received.
     error IndexOutOfBound(uint256 providedIndex, uint256 maxIndex); // Used when the provided index is out of bounds.
@@ -89,83 +82,8 @@ contract TTTDemo is CCIPReceiver, OwnerIsCreator {
         rentalToken = realtoken;
     }
 
-    // function start(uint256 rentAmount, 
-    //     uint256 rentDuration, 
-    //     uint256 area, uint64 destinationChainSelector, address receiver) external {
-    //     // bytes32 uniqueId = keccak256(abi.encodePacked(block.timestamp, msg.sender));
-    //     rentalId++;
-    //     sessionIds.push(rentalId);
-    //     gameSessions[rentalId]= GameSession(
-    //         rentalId,
-    //         msg.sender,
-    //         address(0),
-    //         rentAmount,
-    //         rentDuration,
-    //         0,
-    //         area,
-    //         0
-    //         );
-
-    //     rentalToken.mint(msg.sender, area); // Mint rentalAmount token as a representation of the property ownership
-
-    //     sendMessage(destinationChainSelector, receiver, gameSessions[rentalId]);
-
-    // }
-
-
-    /// @notice Sends data to receiver on the destination chain.
-    /// dev Assumes your contract has sufficient native asset (e.g, ETH on Ethereum, MATIC on Polygon...).
-    /// param destinationChainSelector The identifier (aka selector) for the destination blockchain.
-    /// param receiver The address of the recipient on the destination blockchain.
-    /// param message The string message to be sent.
-    /// return messageId The ID of the message that was sent.
-    // function sendMessage(
-    //     uint64 destinationChainSelector,
-    //     address receiver,
-    //     GameSession memory message
-    // ) public returns (bytes32 messageId) {
-    //     // Create an EVM2AnyMessage struct in memory with necessary information for sending a cross-chain message
-    //     Client.EVM2AnyMessage memory evm2AnyMessage = Client.EVM2AnyMessage({
-    //         receiver: abi.encode(receiver), // ABI-encoded receiver address
-    //         data: abi.encode(message), // ABI-encoded string message
-    //         tokenAmounts: new Client.EVMTokenAmount[](0), // Empty array indicating no tokens are being sent
-    //         extraArgs: Client._argsToBytes(
-    //             Client.EVMExtraArgsV1({gasLimit: 400_000}) // Additional arguments, setting gas limit and non-strict sequency mode
-    //         ),
-    //         feeToken: address(0) // Setting feeToken to zero address, indicating native asset will be used for fees
-    //     });
-
-    //     // Initialize a router client instance to interact with cross-chain router
-    //     IRouterClient router = IRouterClient(_router);
-
-    //     // Get the fee required to send the message
-    //     uint256 fees = router.getFee(destinationChainSelector, evm2AnyMessage);
-
-    //     // Send the message through the router and store the returned message ID
-    //     messageId = router.ccipSend{value: fees}(
-    //         destinationChainSelector,
-    //         evm2AnyMessage
-    //     );
-
-    //     // Emit an event with message details
-    //     emit MessageSent(
-    //         messageId,
-    //         destinationChainSelector,
-    //         receiver,
-    //         message,
-    //         fees
-    //     );
-
-    //     // Return the message ID
-    //     return messageId;
-    // }
 
     function acceptRental(uint256 rentId, uint256 _amount, address _token, uint64 destinationChainSelector, address receiver) public{
-        // require(rental.owner != address(0), "Invalid rental");
-        // require(rental.renter == address(0), "Already rented");
-        // require(paymentToken.transferFrom(msg.sender, rental.owner, rental.rentAmount), "Rent payment failed");
-
-        // rentalToken.transferFrom(rental.owner, rental.renter, rental.rentAmount);
 
         GameSession storage rental = gameSessions[rentId];
         rental.renter = msg.sender;
@@ -312,62 +230,6 @@ contract TTTDemo is CCIPReceiver, OwnerIsCreator {
                 feeToken: _feeTokenAddress
             });
     }
-
-    // function sendMessage(
-    //     address _token,
-    //     uint256 _amount,
-    //     uint64 destinationChainSelector,
-    //     address receiver,
-    //     GameSession memory message
-    // ) public returns (bytes32 messageId) {
-    //     // Create an EVM2AnyMessage struct in memory with necessary information for sending a cross-chain message
-
-    //     Client.EVMTokenAmount memory tokenAmount = Client.EVMTokenAmount({token: _token, amount: _amount});
-
-    //     Client.EVMTokenAmount[] memory tokenAmounts = new Client.EVMTokenAmount[](1);
-    //     tokenAmounts[0] = tokenAmount;
-
-    //     Client.EVM2AnyMessage memory evm2AnyMessage = Client.EVM2AnyMessage({
-    //         receiver: abi.encode(receiver), // ABI-encoded receiver address
-    //         data: abi.encode(message), // ABI-encoded string message
-    //         tokenAmounts: tokenAmounts, // Empty array indicating no tokens are being sent
-    //         extraArgs: Client._argsToBytes(
-    //             Client.EVMExtraArgsV1({gasLimit: 400_000}) // Additional arguments, setting gas limit and non-strict sequency mode
-    //         ),
-    //         feeToken: address(0) // Setting feeToken to zero address, indicating native asset will be used for fees
-    //     });
-
-    //     // Initialize a router client instance to interact with cross-chain router
-    //     IRouterClient router = IRouterClient(_router);
-    //     // s_linkToken.approve(address(router), fees);
-
-
-    //     require(IERC20(_token).approve(address(router), _amount), "Failed to approve router");
-
-    //     // Get the fee required to send the message
-    //     uint256 fees = router.getFee(destinationChainSelector, evm2AnyMessage);
-
-    //     s_linkToken.approve(address(router), fees);
-
-
-    //     // Send the message through the router and store the returned message ID
-    //     messageId = router.ccipSend{value: fees}(
-    //         destinationChainSelector,
-    //         evm2AnyMessage
-    //     );
-
-    //     // Emit an event with message details
-    //     emit MessageSent(
-    //         messageId,
-    //         destinationChainSelector,
-    //         receiver,
-    //         message,
-    //         fees
-    //     );
-
-    //     // Return the message ID
-    //     return messageId;
-    // }
     
 
     function _ccipReceive(
@@ -396,12 +258,6 @@ contract TTTDemo is CCIPReceiver, OwnerIsCreator {
         return receivedMessages.length;
     }
 
-    /// @notice Fetches the details of the last received message.
-    /// @dev Reverts if no messages have been received yet.
-    /// @return messageId The ID of the last received message.
-    /// @return sourceChainSelector The source chain identifier (aka selector) of the last received message.
-    /// @return sender The address of the sender of the last received message.
-    /// @return message The last received message.
     function getLastReceivedMessageDetails()
         external
         view
@@ -429,16 +285,8 @@ contract TTTDemo is CCIPReceiver, OwnerIsCreator {
         );
     }
 
-
-    /// @notice Fallback function to allow the contract to receive Ether.
-    /// @dev This function has no function body, making it a default function for receiving Ether.
-    /// It is automatically called when Ether is sent to the contract without any data.
     receive() external payable {}
 
-    /// @notice Allows the contract owner to withdraw the entire balance of Ether from the contract.
-    /// @dev This function reverts if there are no funds to withdraw or if the transfer fails.
-    /// It should only be callable by the owner of the contract.
-    /// @param beneficiary The address to which the Ether should be sent.
     function withdraw(address beneficiary) public onlyOwner {
         // Retrieve the balance of this contract
         uint256 amount = address(this).balance;
@@ -484,8 +332,3 @@ contract TTTDemo is CCIPReceiver, OwnerIsCreator {
     }
 }
 
-// 0x1ab3b7b9b51a3738ad96Ab39d72A11619aC7b343
-
-// 0xcab0EF91Bee323d1A617c0a027eE753aFd6997E4
-
-// 0x81BD5C925b94108715b728aAf1A1F7A36A6A7569

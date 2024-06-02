@@ -27,9 +27,9 @@
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
     "@openzeppelin/contracts": "^5.0.1",
-    "@rainbow-me/rainbowkit": "^2.0.1",
     "@tailwindcss/aspect-ratio": "^0.4.2",
-    "@tanstack/react-query": "^5.24.1",
+    "@rainbow-me/rainbowkit": "^2.1.1",
+    "@tanstack/react-query": "^5.40.0",
     "@web3-storage/w3up-client": "^12.4.1",
     "ethers": "^6.11.1",
     "mui": "^0.0.1",
@@ -44,8 +44,8 @@
     "react-toastify": "^10.0.5",
     "solc": "^0.8.24",
     "typewriter-effect": "^2.21.0",
-    "viem": "^2.7.22",
-    "wagmi": "^2.5.7",
+    "viem": "^2.13.3",
+    "wagmi": "^2.9.8",
     "web3modal": "^1.9.12"
   },
   "devDependencies": {

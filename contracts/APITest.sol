@@ -1,120 +1,92 @@
+
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.18;
 
-import {Chainlink, ChainlinkClient} from "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
-import {ConfirmedOwner} from "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol";
-import {LinkTokenInterface} from "@chainlink/contracts/src/v0.8/shared/interfaces/LinkTokenInterface.sol";
+import {FunctionsClient} from "@chainlink/contracts/src/v0.8/functions/dev/v1_0_0/FunctionsClient.sol";
+import {FunctionsRequest} from "@chainlink/contracts/src/v0.8/functions/dev/v1_0_0/libraries/FunctionsRequest.sol";
 
-/**
- * Request testnet LINK and ETH here: https://faucets.chain.link/
- * Find information on LINK Token Contracts and get the latest ETH and LINK faucets here: https://docs.chain.link/docs/link-token-contracts/
- */
 
-/**
- * THIS IS AN EXAMPLE CONTRACT WHICH USES HARDCODED VALUES FOR CLARITY.
- * THIS EXAMPLE USES UN-AUDITED CODE.
- * DO NOT USE THIS CODE IN PRODUCTION.
- */
+contract APICall is FunctionsClient {
+    address router = 
+    0xC22a79eBA640940ABB6dF0f7982cc119578E11De;
+    bytes32 donID = 
+    0x66756e2d706f6c79676f6e2d616d6f792d310000000000000000000000000000;
+    uint64 subscriptionId;
 
-contract APIConsumer is ChainlinkClient, ConfirmedOwner {
-    using Chainlink for Chainlink.Request;
-
-    bool public test;
-    bytes32 private jobId;
-    uint256 private fee;
-    bytes32 public currentRequestId;
-
-    mapping (bytes32 => bool) public requestIdToresult;
-
-    event Requesttest(bytes32 indexed requestId, bool test);
-
-    /**
-     * @notice Initialize the link token and target oracle
-     *
-     * Sepolia Testnet details:
-     * Link Token: 0x779877A7B0D9E8603169DdbD7836e478b4624789
-     * Oracle: 0x6090149792dAAeE9D1D568c9f9a6F6B46AA29eFD (Chainlink DevRel)
-     0xCC79157eb46F5624204f47AB42b3906cAA40eaB7
-     * jobId: ca98366cc7314957b8c012c72f05aeeb
-     7d80a6386ef543a3abb52817f6707e3b
-     *
-     */
-    constructor() ConfirmedOwner(msg.sender) {
-        _setChainlinkToken(0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06);
-        _setChainlinkOracle(0xCC79157eb46F5624204f47AB42b3906cAA40eaB7);
-        jobId = "c1c5e92880894eb6b27d3cae19670aa3";
-        fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job)
+    constructor(uint64 _subscriptionId) FunctionsClient(router) {
+       subscriptionId= _subscriptionId;
     }
 
-    /**
-     * Create a Chainlink request to retrieve API response, find the target
-     * data, then multiply by 1000000000000000000 (to remove decimal places from data).
-     */
-    function requesttestData(string memory _dataurl) public returns (bytes32 requestId) {
-        Chainlink.Request memory req = _buildChainlinkRequest(
-            jobId,
-            address(this),
-            this.fulfill.selector
+    using FunctionsRequest for FunctionsRequest.Request;
+
+    bytes32 public s_lastRequestId;
+    bytes public s_lastResponse;
+    bytes public s_lastError;
+    string public results;
+
+    mapping (bytes32 => string) public requestIdToResults;
+    
+    error UnexpectedRequestID(bytes32 requestId);
+
+    uint32 gasLimit = 300000;
+
+    string APIScript =
+        "const characterId = args[0];"
+        "const apiResponse = await Functions.makeHttpRequest({"
+        "url: `https://restapt-production.up.railway.app/${characterId}`,"
+        "});"
+        "if (apiResponse.error) {"
+        "throw Error('Request failed');"
+        "}"
+        "const { data } = apiResponse;"
+        "return Functions.encodeString(data.data);";
+
+    function APICallFunction(
+        string[] calldata args
+    ) public returns (bytes32 requestId) {
+        FunctionsRequest.Request memory req;
+        req.initializeRequestForInlineJavaScript(APIScript);
+        
+        if (args.length > 0) req.setArgs(args);
+        s_lastRequestId = _sendRequest(
+            req.encodeCBOR(),
+            subscriptionId,
+            gasLimit,
+            donID
         );
-
-        // Set the URL to perform the GET request on
-        req._add(
-            "get",
-            // "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD"
-            // "https://web-production-f8af.up.railway.app/weatherData");
-            _dataurl);
-
-        // Set the path to find the desired data in the API response, where the response format is:
-        // {"RAW":
-        //   {"ETH":
-        //    {"USD":
-        //     {
-        //      "test24HOUR": xxx.xxx,
-        //     }
-        //    }
-        //   }
-        //  }
-        // request.add("path", "RAW.ETH.USD.test24HOUR"); // Chainlink nodes prior to 1.0.0 support this format
-        // req._add("path", "RAW,ETH,USD,test24HOUR"); // Chainlink nodes 1.0.0 and later support this format
-
-        // // Multiply the result by 1000000000000000000 to remove decimals
-        // int256 timesAmount = 10 ** 18;
-        // req._addInt("times", timesAmount);
-        req._add("path", "data");
-        // Sends the request
-        currentRequestId = _sendChainlinkRequest(req, fee);
-        return _sendChainlinkRequest(req, fee);
+        return s_lastRequestId;
     }
 
-    /**
-     * Receive the response in the form of uint256
-     */
-    function fulfill(
-        bytes32 _requestId,
-        bool _test
-    ) public recordChainlinkFulfillment(_requestId) {
-        requestIdToresult[_requestId] = _test;
-        emit Requesttest(_requestId, _test);
-        test = _test;
+    function fulfillRequest(
+        bytes32 requestId,
+        bytes memory response,
+        bytes memory err
+    ) internal override {
+        if (s_lastRequestId != requestId) {
+            revert UnexpectedRequestID(requestId);
+        }
+        s_lastResponse = response;
+        s_lastError = err;
+        results = string(response);
+        requestIdToResults[requestId] = string(response);
+        // initContractInstance.fallbackAPICallExecution(result);
     }
 
-
-    /**
-     * Allow withdraw of Link tokens from the contract
-     */
-    function withdrawLink() public onlyOwner {
-        LinkTokenInterface link = LinkTokenInterface(_chainlinkTokenAddress());
-        require(
-            link.transfer(msg.sender, link.balanceOf(address(this))),
-            "Unable to transfer"
-        );
-    }
-    function getCurrentRequestId() public view returns (bytes32){
-        return currentRequestId;
+    function getValue() public view returns (string memory) {
+        return results;
     }
 
-    function getValue(bytes32 _requestId) public view returns( bool ){
-        bool _test = requestIdToresult[_requestId];
-        return _test;
+    function requestClaim(string[] calldata state) public returns (bytes32) {
+        // string memory mainurl = concatenate(dataUrl, state);
+        bytes32 requestId = APICallFunction(state);
+        // requestId = requestId;
+        return requestId;
     }
+
+    function claim(bytes32 _requestId) public view returns (string memory){
+        // string memory result = getValue();
+        string memory result = requestIdToResults[_requestId];
+        return result;
+    }
+
 }
